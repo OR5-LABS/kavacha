@@ -5,10 +5,10 @@
 `default_nettype none
 
 module kavacha_rvc (
-  input  logic [15:0] instr16,
-  output logic [31:0] instr32,
-  output logic        is_compressed,
-  output logic        decomp_illegal
+  input  wire logic [15:0] instr16,
+  output      logic [31:0] instr32,
+  output wire logic        is_compressed,
+  output      logic        decomp_illegal
 );
 
   function automatic logic [4:0] rp (input logic [2:0] bits);

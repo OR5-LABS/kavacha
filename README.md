@@ -73,6 +73,8 @@ kavacha/
 Linux / macOS:
 
 ```bash
+chmod +x build.sh   # make the build.sh file executable
+
 ./build.sh          # compile + self-checking smoke test
 ./build.sh cosim    # + co-simulate against the golden ISA model
 ./build.sh rvfi     # RVFI (formal interface) self-check

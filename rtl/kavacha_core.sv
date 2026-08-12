@@ -86,8 +86,16 @@ module kavacha_core
   output logic [XLEN-1:0]   rvfi_mem_wdata
 `endif
 );
-  typedef enum logic [3:0] { S_FETCH, S_EXEC, S_LOAD, S_MD, S_FETCH2, S_LOAD2, S_STORE2, S_HALTED } state_e;
-  state_e state;
+  localparam logic [3:0] S_FETCH  = 4'd0;
+  localparam logic [3:0] S_EXEC   = 4'd1;
+  localparam logic [3:0] S_LOAD   = 4'd2;
+  localparam logic [3:0] S_MD     = 4'd3;
+  localparam logic [3:0] S_FETCH2 = 4'd4;
+  localparam logic [3:0] S_LOAD2  = 4'd5;
+  localparam logic [3:0] S_STORE2 = 4'd6;
+  localparam logic [3:0] S_HALTED = 4'd7;
+  logic [3:0] state;
+
 
   // ---- debug-mode state (RISC-V external debug) ----------------------------
   logic            dbg_mode;        // 1 = halted in debug mode
@@ -257,6 +265,10 @@ module kavacha_core
   wire             irq_req;
   wire [3:0]       irq_cause;
 
+  wire [1:0] aoff = alu_y[1:0];
+  // a misaligned access crosses a word boundary: word at off!=0, or half at off=3
+  wire mis = (d_mem_width==2'd2 && aoff!=2'b00) || (d_mem_width==2'd1 && aoff==2'b11);
+
   // commit = the cycle an instruction finishes (misaligned mem takes a 2nd beat).
   // Memory commits are gated on !mem_stall so a not-ready bus never double-commits.
   wire commit = (state==S_EXEC && !d_mem_re && !d_is_md && !(d_mem_we && mis)
@@ -308,9 +320,6 @@ module kavacha_core
                         csr_rdata;                                // CSR (addr = regno)
 
   // ---- memory ports (unified shift path; misaligned = two beats) -----------
-  wire [1:0] aoff = alu_y[1:0];
-  // a misaligned access crosses a word boundary: word at off!=0, or half at off=3
-  wire mis = (d_mem_width==2'd2 && aoff!=2'b00) || (d_mem_width==2'd1 && aoff==2'b11);
   wire is_load_ex  = (state==S_EXEC) && d_mem_re && !ex_trap;
   wire is_store_ex = (state==S_EXEC) && d_mem_we && !ex_trap;
   logic [31:0] ld_w0;                       // first word captured for a misaligned load

@@ -1,8 +1,8 @@
 # simulation artifacts
 sim/
-programs/build/*.hex
-programs/build/*.bin
-programs/build/*.elf
+*.hex
+*.bin
+*.elf
 *.vcd
 *.out
 *.vvp
@@ -26,3 +26,8 @@ site/
 *.swp
 .DS_Store
 Thumbs.db
+
+# fpga builds
+vivado*
+.Xil/
+fpga/*/build

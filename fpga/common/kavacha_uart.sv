@@ -27,19 +27,20 @@ module kavacha_uart #(
   parameter int BAUD         = 115_200,
   parameter int BAUD_DIV_RST = CLK_HZ / BAUD
 )(
-  input  logic       clk, rst,
+  input  wire logic       clk,
+  input  wire logic       rst,
   // CPU bus (byte access)
-  input  logic [3:0] addr,
-  input  logic [7:0] wdata,
-  input  logic       we,
-  input  logic       re,
-  output logic [7:0] rdata,
+  input  wire logic [3:0] addr,
+  input  wire logic [7:0] wdata,
+  input  wire logic       we,
+  input  wire logic       re,
+  output logic [7:0]      rdata,
   // Real serial pins (FPGA / tape-out)
-  output logic       serial_tx,
-  input  logic       serial_rx,
+  output logic            serial_tx,
+  input  wire logic       serial_rx,
   // Interrupts
-  output logic       tx_irq,    // pulses when TX shifter empties
-  output logic       rx_irq     // pulses when a new byte arrives
+  output logic            tx_irq,    // pulses when TX shifter empties
+  output logic            rx_irq     // pulses when a new byte arrives
 );
 
   // -------------------------------------------------------------------------

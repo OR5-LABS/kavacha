@@ -13,6 +13,15 @@ set part      xczu9eg-ffvb1156-2-e
 file mkdir $build_dir
 cd $build_dir
 
+if {![file exists $build_dir/firmware.mem]} {
+  if {[file exists $fpga_dir/../../sw/firmware.mem]} {
+    file copy -force $fpga_dir/../../sw/firmware.mem $build_dir/firmware.mem
+  } else {
+    error "Missing firmware image $build_dir/firmware.mem. Build it first: cd sw && ./build_fpga_hello.sh"
+  }
+}
+
+
 set fp [open $fpga_dir/kavacha_zcu102.f r]
 while {[gets $fp line] >= 0} {
   set line [string trim $line]
@@ -24,6 +33,7 @@ close $fp
 read_xdc $fpga_dir/kavacha_zcu102.xdc
 set_property part $part [current_project]
 set_property top kavacha_zcu102 [current_fileset]
+set_property include_dirs [list [file normalize $fpga_dir/../../rtl/common]] [current_fileset]
 
 add_files -norecurse $build_dir/firmware.mem
 set_property file_type {Memory Initialization Files} [get_files firmware.mem]

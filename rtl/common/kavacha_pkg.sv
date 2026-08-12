@@ -11,7 +11,9 @@
 package kavacha_pkg;
 
   // ---- Word geometry -------------------------------------------------------
-  localparam int unsigned XLEN = 32;
+  localparam bit [31:0] XLEN = 32;
+
+
 
   // ---- Major opcodes (instr[6:0]) -----------------------------------------
   localparam logic [6:0] OP_LUI    = 7'b0110111;

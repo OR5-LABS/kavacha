@@ -23,9 +23,9 @@ module common_reset_sync #(
     parameter int  DEPTH       = 3,
     parameter bit  ACTIVE_HIGH = 1'b1
 ) (
-    input  logic clk,
-    input  logic async_rst_in,
-    output logic sync_rst_out
+    input  wire logic clk,
+    input  wire logic async_rst_in,
+    output wire logic sync_rst_out
 );
 
   // Internal async-reset value: when async_rst_in indicates "reset asserted",

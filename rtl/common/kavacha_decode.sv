@@ -108,10 +108,11 @@ module kavacha_decode
           endcase
         end else begin
           unique case (funct3)
-            3'b000:alu_op=alu_op_e'((funct7==7'b0100000)?ALU_SUB:ALU_ADD);
+            3'b000:alu_op=(funct7==7'b0100000)?ALU_SUB:ALU_ADD;
             3'b001:alu_op=ALU_SLL; 3'b010:alu_op=ALU_SLT; 3'b011:alu_op=ALU_SLTU;
             3'b100:alu_op=ALU_XOR;
-            3'b101:alu_op=alu_op_e'((funct7==7'b0100000)?ALU_SRA:ALU_SRL);
+            3'b101:alu_op=(funct7==7'b0100000)?ALU_SRA:ALU_SRL;
+
             3'b110:alu_op=ALU_OR; 3'b111:alu_op=ALU_AND; default:illegal=1;
           endcase
           if (funct7!=7'b0000000 && funct7!=7'b0100000) illegal=1;

@@ -145,22 +145,27 @@ module kavacha_fpga
       mtime <= 64'd0; mtimecmp <= 64'hFFFF_FFFF_FFFF_FFFF; msip <= 1'b0; leds <= 8'h0;
     end else begin
       mtime <= mtime + 64'd1;
-      if (dmem_we) begin
-        if (in_ram) begin                       // byte-enabled RAM write
-          if (dmem_be[0]) mem[didx][7:0]   <= dmem_wdata[7:0];
-          if (dmem_be[1]) mem[didx][15:8]  <= dmem_wdata[15:8];
-          if (dmem_be[2]) mem[didx][23:16] <= dmem_wdata[23:16];
-          if (dmem_be[3]) mem[didx][31:24] <= dmem_wdata[31:24];
-        end else if (clint_sel) begin
-          if (dmem_addr[15:0]==16'h0000) msip           <= dmem_wdata[0];
-          if (dmem_addr[15:0]==16'h4000) mtimecmp[31:0] <= dmem_wdata;
-          if (dmem_addr[15:0]==16'h4004) mtimecmp[63:32]<= dmem_wdata;
-        end else if (led_sel)   leds <= dmem_wdata[7:0];
-        else if (tohost_sel) begin tohost <= dmem_wdata; tohost_we <= 1'b1; end
-      end
-      // Debug-Module System-Bus writes into RAM (hart halted -> no contention)
+
+      // RAM write: Debug-Module System-Bus write (priority) or CPU core write
       if (dm_mem_valid && dm_mem_write && (dm_mem_addr < MEM_WORDS*4)) begin
         mem[dm_mem_addr[AW+1:2]] <= dm_mem_wdata;
+      end else if (dmem_we && in_ram) begin
+        if (dmem_be[0]) mem[didx][7:0]   <= dmem_wdata[7:0];
+        if (dmem_be[1]) mem[didx][15:8]  <= dmem_wdata[15:8];
+        if (dmem_be[2]) mem[didx][23:16] <= dmem_wdata[23:16];
+        if (dmem_be[3]) mem[didx][31:24] <= dmem_wdata[31:24];
+      end
+
+      // CLINT / LED / tohost writes
+      if (dmem_we) begin
+        if (!in_ram) begin
+          if (clint_sel) begin
+            if (dmem_addr[15:0]==16'h0000) msip           <= dmem_wdata[0];
+            if (dmem_addr[15:0]==16'h4000) mtimecmp[31:0] <= dmem_wdata;
+            if (dmem_addr[15:0]==16'h4004) mtimecmp[63:32]<= dmem_wdata;
+          end else if (led_sel)   leds <= dmem_wdata[7:0];
+          else if (tohost_sel) begin tohost <= dmem_wdata; tohost_we <= 1'b1; end
+        end
       end
     end
   end

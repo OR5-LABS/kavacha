@@ -23,8 +23,12 @@ module kavacha_muldiv
   output logic              done,
   output logic [XLEN-1:0]   result
 );
-  typedef enum logic [1:0] { S_IDLE, S_MUL, S_DIV, S_FIN } state_e;
-  state_e state;
+  localparam logic [1:0] S_IDLE = 2'd0;
+  localparam logic [1:0] S_MUL  = 2'd1;
+  localparam logic [1:0] S_DIV  = 2'd2;
+  localparam logic [1:0] S_FIN  = 2'd3;
+  logic [1:0] state;
+
 
   md_op_e          op_q;
   logic [XLEN-1:0] a_q, b_q;

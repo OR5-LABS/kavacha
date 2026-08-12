@@ -10,8 +10,10 @@
 module kavacha_soc
   import kavacha_pkg::*;
 #(
-  parameter int unsigned IMEM_WORDS = 8192,
-  parameter int unsigned DRAM_WORDS = 8192,
+  parameter bit [31:0] IMEM_WORDS = 8192,
+  parameter bit [31:0] DRAM_WORDS = 8192,
+
+
   parameter logic [XLEN-1:0] DRAM_BASE   = 32'h8000_0000,
   parameter logic [XLEN-1:0] TOHOST_ADDR = 32'h2000_0000,
 `ifdef KAVACHA_SECURE

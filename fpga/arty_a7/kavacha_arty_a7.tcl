@@ -7,11 +7,21 @@
 #   cd sw && ./build_fpga_hello.sh && cp firmware.mem <BUILD_DIR>/firmware.mem
 # =============================================================================
 set fpga_dir  [file normalize [file dirname [info script]]]
-set build_dir [expr {[llength $argv] >= 1 ? [lindex $argv 0] : "$fpga_dir/build"}]
+set build_dir [file normalize [expr {[llength $argv] >= 1 ? [lindex $argv 0] : "$fpga_dir/build"}]]
 set part      xc7a100tcsg324-1
+
 
 file mkdir $build_dir
 cd $build_dir
+
+if {![file exists $build_dir/firmware.mem]} {
+  if {[file exists $fpga_dir/../../sw/firmware.mem]} {
+    file copy -force $fpga_dir/../../sw/firmware.mem $build_dir/firmware.mem
+  } else {
+    error "Missing firmware image $build_dir/firmware.mem. Build it first: cd sw && ./build_fpga_hello.sh"
+  }
+}
+
 
 set fp [open $fpga_dir/kavacha_arty_a7.f r]
 while {[gets $fp line] >= 0} {
@@ -24,6 +34,7 @@ close $fp
 read_xdc $fpga_dir/kavacha_arty_a7.xdc
 set_property part $part [current_project]
 set_property top kavacha_arty_a7 [current_fileset]
+set_property include_dirs [list [file normalize $fpga_dir/../../rtl/common]] [current_fileset]
 
 # firmware.mem must be in $build_dir (one 32-bit hex word per line)
 add_files -norecurse $build_dir/firmware.mem
