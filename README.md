@@ -305,8 +305,6 @@ Expected output:
 .\build.ps1 clean
 ```
 
----
-
 ## License
 
 Released under the [MIT License](LICENSE) — free for commercial and academic use.
