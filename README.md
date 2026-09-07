@@ -307,19 +307,6 @@ Expected output:
 
 ---
 
-## Documentation
-
-Full documentation — architecture, ISA, memory map, CSRs, security model,
-debug, bus integration, FPGA bring-up, and verification — lives in [`docs/`](docs)
-and builds into a browsable site with [MkDocs](https://www.mkdocs.org/):
-
-```bash
-pip install -r docs/requirements.txt
-mkdocs serve      # http://127.0.0.1:8000
-```
-
----
-
 ## License
 
 Released under the [MIT License](LICENSE) — free for commercial and academic use.
