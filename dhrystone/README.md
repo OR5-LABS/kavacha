@@ -61,16 +61,14 @@ The industry-standard Dhrystone benchmark requires executing for at least 2 real
 
 All benchmark metrics are measured across 100,000 runs:
 
-| Metric | Verilator Simulation | FPGA HIL (Arty A7 @ 50 MHz) |
-|--------|:-------------------:|:---------------------------:|
-| **Iterations** | 100,000 | 100,000 |
-| **Benchmark Cycles (`User_Time`)** | **141,600,085** | **207,900,101** |
-| **Instructions Executed** | **47,400,032** | — |
-| **Cycles per Instruction (CPI)** | **2.987** | — |
-| **Cycles / Iteration** | **1,416.0** | **2,079.0** |
-| **Dhrystones / sec / MHz** | **706.2** | **481.0** |
-| **DMIPS / MHz** | **0.401** | **0.274** |
-| **Status** | ✅ PASS | ✅ PASS |
+| Metric | FPGA HIL (Arty A7 @ 50 MHz) |
+|--------|:---------------------------:|
+| **Iterations** | 100,000 |
+| **Benchmark Cycles (`User_Time`)** | **207,900,101** |
+| **Cycles / Iteration** | **2,079.0** |
+| **Dhrystones / sec / MHz** | **481.0** |
+| **DMIPS / MHz** | **0.274** |
+| **Status** | ✅ PASS |
 
 *(Note: Total simulation cycles including `crt0.S` boot initialization and exit sequence is `141,760,938` cycles).*
 
@@ -79,13 +77,13 @@ All benchmark metrics are measured across 100,000 runs:
 ## Score Calculation Methodology
 
 1. **Cycles per Iteration**:
-   $$\text{Cycles / Iteration} = \frac{\text{Benchmark Cycles}}{\text{Iterations}} = \frac{141,600,085}{100,000} = 1,416.0$$
+   $$\text{Cycles / Iteration} = \frac{\text{Benchmark Cycles}}{\text{Iterations}} = \frac{207,900,101}{100,000} = 2,079.0$$
 
 2. **Dhrystones per Second per MHz**:
-   $$\text{Dhrystones / sec / MHz} = \frac{\text{Iterations} \times 1,000,000}{\text{Benchmark Cycles}} = \frac{100,000 \times 1,000,000}{141,600,085} = 706.214$$
+   $$\text{Dhrystones / sec / MHz} = \frac{\text{Iterations} \times 1,000,000}{\text{Benchmark Cycles}} = \frac{100,000 \times 1,000,000}{207,900,101} = 481.0$$
 
 3. **DMIPS / MHz** (Normalized against the VAX 11/780 baseline of 1,757 Dhrystones/sec):
-   $$\text{DMIPS / MHz} = \frac{\text{Dhrystones / sec / MHz}}{1,757} = \frac{706.214}{1,757} = \mathbf{0.401 \text{ DMIPS/MHz}}$$
+   $$\text{DMIPS / MHz} = \frac{\text{Dhrystones / sec / MHz}}{1,757} = \frac{481.0}{1,757} = \mathbf{0.274 \text{ DMIPS/MHz}}$$
 
 ---
 
@@ -97,9 +95,6 @@ All benchmark metrics are measured across 100,000 runs:
 - **`./run_dhrystone_fpga.sh`**:
   Builds bare-metal FPGA firmware, runs automated hardware bitstream injection and execution on the physical Arty A7-100T board over UART, and records scores to `bench/results/hil_report.md`.
 
-## Simulation Results
-
-![alt text](dhry_sim.png)
 
 ## FPGA Results
 

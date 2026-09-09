@@ -89,7 +89,8 @@ SCALE       ?= 100
 SCALE_picojpeg    := 10
 SCALE_nsichneu    := 10
 SCALE_qrduino     := 10
-SCALE_wikisort    := 10
+SCALE_wikisort    := 2
+SCALE_huffbench   := 2
 
 # wikisort uses bool/true/false without #include <stdbool.h>.
 # Force-include it to fix the build without patching upstream source.
@@ -271,7 +272,7 @@ $(foreach b,$(EMBENCH_BENCHMARKS),$(eval $(call EMBENCH_RULE,$(b))))
 ###############################################################################
 # run targets
 ###############################################################################
-TIMEOUT_CYCLES ?= 50000000  # 50 M cycles (fast benchmark mode)
+TIMEOUT_CYCLES ?= 2000000000  # 2B cycles (enough for CoreMark 1000 iters)
 
 KAVACHA_RESULTS := $(RESULTS_DIR)/kavacha
 
@@ -281,6 +282,7 @@ run-kavacha-coremark: $(SIM_BIN) $(COREMARK_HEX) | $(KAVACHA_RESULTS) $(RESULTS_
 	@echo "[RUN/Kavacha] CoreMark..."
 	$(SIM_BIN) --hex $(COREMARK_HEX) --name coremark \
 	    --max-cycles $(TIMEOUT_CYCLES) \
+	    --iterations $(ITERATIONS) \
 	    | tee $(KAVACHA_RESULTS)/coremark.log
 
 .PHONY: run-embench run-kavacha-embench

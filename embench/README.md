@@ -74,38 +74,38 @@ EMBench-IoT consists of real-world algorithms spanning signal processing, crypto
 
 ### Summary
 
-| Metric | Verilator Simulation | FPGA HIL (Arty A7 @ 50 MHz) |
-|--------|:-------------------:|:---------------------------:|
-| **Benchmarks Executed** | **19** | **15** |
-| **Pass Rate** | **19 / 19 (100%)** | **15 / 15 (100%)** |
-| **Geometric Mean (Cycles)** | **7,011,979** | **7,122,462** |
+| Metric | FPGA HIL (Arty A7 @ 50 MHz) |
+|--------|:---------------------------:|
+| **Benchmarks Executed** | **15** |
+| **Pass Rate** | **15 / 15 (100%)** |
+| **Geometric Mean (Cycles)** | **7,122,462** |
 
 ---
 
 ### Detailed Cycle Counts per Workload
 
-| Benchmark | Scale Factor | Simulation Cycles | FPGA HIL Cycles (@ 50 MHz) | Status |
-|-----------|:------------:|:-----------------:|:--------------------------:|:------:|
-| `nsichneu` | 10 | 64,516 | 89,710 | ✅ PASS |
-| `ud` | 100 | 481,402 | 659,080 | ✅ PASS |
-| `huffbench` | 2 | 66,214,582 | 1,930,435 | ✅ PASS |
-| `nettle-sha256` | 100 | 2,412,894 | 3,643,639 | ✅ PASS |
-| `aha-mont64` | 100 | 2,496,279 | 3,908,328 | ✅ PASS |
-| `crc32` | 100 | 5,839,751 | 9,425,039 | ✅ PASS |
-| `slre` | 100 | 6,145,369 | 8,875,369 | ✅ PASS |
-| `wikisort` | 2 | 23,025,989 | 7,161,975 | ✅ PASS |
-| `edn` | 100 | 13,181,710 | 16,776,669 | ✅ PASS |
-| `tarfind` | 100 | 13,329,185 | 21,895,088 | ✅ PASS |
-| `qrduino` | 10 | 14,938,047 | 21,859,140 | ✅ PASS |
-| `nettle-aes` | 100 | 16,161,399 | 22,991,913 | ✅ PASS |
-| `picojpeg` | 10 | 17,222,583 | 25,180,369 | ✅ PASS |
-| `matmult-int` | 100 | 24,213,440 | 36,717,157 | ✅ PASS |
-| `sglib-combined` | 100 | 26,348,707 | 37,050,759 | ✅ PASS |
-| `statemate` | 100 | 324,545 | — | ✅ PASS (Sim) |
-| `depthconv` | 100 | 652,229 | — | ✅ PASS (Sim) |
-| `md5sum` | 100 | 11,746,585 | — | ✅ PASS (Sim) |
-| `xgboost` | 100 | 992,662,851 | — | ✅ PASS (Sim) |
-| **Geometric Mean** | — | **7,011,979** | **7,122,462** | ✅ PASS |
+| Benchmark | Scale Factor | FPGA HIL Cycles (@ 50 MHz) | Status |
+|-----------|:------------:|:--------------------------:|:------:|
+| `nsichneu` | 10 | 89,710 | ✅ PASS |
+| `ud` | 100 | 659,080 | ✅ PASS |
+| `huffbench` | 2 | 1,930,435 | ✅ PASS |
+| `nettle-sha256` | 100 | 3,643,639 | ✅ PASS |
+| `aha-mont64` | 100 | 3,908,328 | ✅ PASS |
+| `crc32` | 100 | 9,425,039 | ✅ PASS |
+| `slre` | 100 | 8,875,369 | ✅ PASS |
+| `wikisort` | 2 | 7,161,975 | ✅ PASS |
+| `edn` | 100 | 16,776,669 | ✅ PASS |
+| `tarfind` | 100 | 21,895,088 | ✅ PASS |
+| `qrduino` | 10 | 21,859,140 | ✅ PASS |
+| `nettle-aes` | 100 | 22,991,913 | ✅ PASS |
+| `picojpeg` | 10 | 25,180,369 | ✅ PASS |
+| `matmult-int` | 100 | 36,717,157 | ✅ PASS |
+| `sglib-combined` | 100 | 37,050,759 | ✅ PASS |
+| `statemate` | 100 | — | — |
+| `depthconv` | 100 | — | — |
+| `md5sum` | 100 | — | — |
+| `xgboost` | 100 | — | — |
+| **Geometric Mean** | — | **7,122,462** | ✅ PASS |
 
 ---
 

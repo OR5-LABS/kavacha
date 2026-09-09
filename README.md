@@ -5,10 +5,6 @@
 </p>
 
 <p align="center">
-  <b><i>Small by design. Correct by construction.</i></b>
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/ISA-RV32IMC-blue?style=flat-square" alt="ISA"/>
   <img src="https://img.shields.io/badge/Extensions-Zicsr-blue?style=flat-square" alt="Extensions"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
@@ -22,7 +18,7 @@
 **Kavacha** (*"armour"* in Sanskrit) is a compact, area-optimized **RV32IMC** processor core.
 It executes one instruction at a time through a small multi-cycle finite state machine — no pipeline, no forwarding, and no hazard logic — which keeps the design tiny, deterministic, and straightforward to verify.
 
-Kavacha targets roles where silicon area, power, and predictability matter more than peak throughput:
+Kavacha targets roles where silicon area, power, and security matter more than peak throughput:
 
 -  **Secure boot ROMs and management engines**
 -  **Deeply embedded control-plane state machines**
@@ -36,14 +32,8 @@ Kavacha targets roles where silicon area, power, and predictability matter more 
 | Property | Value |
 |----------|-------|
 | ISA | RV32IMC + Zicsr |
-| Register width (XLEN) | 32-bit |
 | Microarchitecture | Multi-cycle FSM, non-pipelined |
-| Instructions in flight | 1 (zero hazards by construction) |
 | Privilege modes | Machine; optional User (`SECURE`) |
-| Memory protection | Optional 8-region PMP + ePMP |
-| Register file | Plain, or SECDED ECC (`SECURE`) |
-| Interrupts | Timer, Software, External |
-| Misaligned load/store | Supported in hardware |
 | Debug | RISC-V External Debug 0.13.2 (JTAG DTM + DM) |
 | Bus interfaces | Native memory port + AXI4-Lite |
 | Verification | Golden co-simulation, RVFI, self-checks |
@@ -154,33 +144,33 @@ Simulated on the Verilator cycle-accurate model.
 
 ### CoreMark
 
-| Metric | Simulation | FPGA (Arty A7 @ 50 MHz) |
-|--------|-----------|-------------------------|
-| Iterations | 1,000 | 1,000 |
-| Total cycles | 847,547,135 | 1,234,774,918 |
-| Cycles / iteration | 847,547.1 | 1,234,774.9 |
-| CoreMark / MHz | **1.1799** | **0.81** |
-| Status | ✅ PASS | ✅ PASS |
+| Metric | FPGA (Arty A7 @ 50 MHz) |
+|--------|-------------------------|
+| Iterations | 1,000 |
+| Total cycles | 1,234,774,918 |
+| Cycles / iteration | 1,234,774.9 |
+| CoreMark / MHz | **0.81** |
+| Status | ✅ PASS |
 
 ### Dhrystone v2.1
 
-| Metric | Simulation | FPGA (Arty A7 @ 50 MHz) |
-|--------|-----------|-------------------------|
-| Iterations | 100,000 | 100,000 |
-| Total cycles | 141,600,085 | 207,900,101 |
-| Cycles / iteration | 1,416 | 2,079 |
-| Dhrystones / sec / MHz | 706 | 481 |
-| DMIPS / MHz | **0.401** | **0.274** |
-| Status | ✅ PASS | ✅ PASS |
+| Metric | FPGA (Arty A7 @ 50 MHz) |
+|--------|-------------------------|
+| Iterations | 100,000 |
+| Total cycles | 207,900,101 |
+| Cycles / iteration | 2,079 |
+| Dhrystones / sec / MHz | 481 |
+| DMIPS / MHz | **0.274** |
+| Status | ✅ PASS |
 
 ### EMBench-IoT
 
-| Metric | Simulation | FPGA HIL (Arty A7 @ 50 MHz) |
-|--------|-----------|-------------------------|
-| Benchmarks run | 19 | 15 |
-| Benchmarks passed | 19 / 19 (100%) | 15 / 15 (100%) |
-| Geometric mean (cycles) | **7,011,979** | **7,122,462** |
-| Scale factor | 100 (10 for picojpeg, nsichneu, qrduino; 2 for wikisort, huffbench) | 100 (10 for picojpeg, nsichneu, qrduino; 2 for wikisort, huffbench) |
+| Metric | FPGA HIL (Arty A7 @ 50 MHz) |
+|--------|-------------------------|
+| Benchmarks run | 15 |
+| Benchmarks passed | 15 / 15 (100%) |
+| Geometric mean (cycles) | **7,122,462** |
+| Scale factor | 100 (10 for picojpeg, nsichneu, qrduino; 2 for wikisort, huffbench) |
 
 
 ###  Reproduce It Yourself
