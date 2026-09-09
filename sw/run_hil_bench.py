@@ -152,14 +152,32 @@ def flash_mem(mem_path, bit_path, build_dir, fpga="arty_a7_100t"):
     is required for each benchmark.  (~5 min per benchmark)
     """
     import shutil
-    fw_mem     = os.path.join(os.path.dirname(bit_path), "../../../sw/firmware.mem")
     tcl_script = os.path.abspath(os.path.join(os.path.dirname(bit_path), "../" + os.path.basename(bit_path).replace(".bit", ".tcl")))
+    # tcl_script is fpga/arty_a7/kavacha_arty_a7.tcl → go up two dirs to reach repo root, then sw/firmware.mem
+    repo_root  = os.path.abspath(os.path.join(os.path.dirname(tcl_script), "../.."))
+    fw_mem     = os.path.join(repo_root, "sw", "firmware.mem")
+
+    # Locate vivado — check PATH first, then common install locations
+    import shutil as _shutil
+    vivado_bin = _shutil.which("vivado")
+    if not vivado_bin:
+        for candidate in [
+            "/home/yash/Vivado/Vivado/2023.2/bin/vivado",
+            "/tools/Xilinx/Vivado/2023.2/bin/vivado",
+            "/opt/Xilinx/Vivado/2023.2/bin/vivado",
+        ]:
+            if os.path.isfile(candidate):
+                vivado_bin = candidate
+                break
+    if not vivado_bin:
+        print("ERROR: Cannot find Vivado. Add it to PATH or install it.")
+        return
 
     print(f"[FLASH] Copying firmware and running Vivado synthesis (~5 min)...")
     shutil.copy(mem_path, fw_mem)
 
     r = subprocess.run(
-        ["vivado", "-mode", "batch", "-source", tcl_script],
+        [vivado_bin, "-mode", "batch", "-source", tcl_script],
         text=True, cwd=os.path.dirname(fw_mem)
     )
     if r.returncode != 0:
@@ -198,6 +216,11 @@ def generate_report(all_results, freq_mhz, out_dir):
 
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    existing_content = ""
+    if os.path.exists(report_path):
+        with open(report_path, "r") as f:
+            existing_content = f.read()
+
     md_mode = "a" if os.path.exists(report_path) else "w"
     with open(report_path, md_mode) as f:
         if md_mode == "w":
@@ -210,10 +233,10 @@ def generate_report(all_results, freq_mhz, out_dir):
         # CoreMark
         cm = next((r for r in all_results if r["bench"] == "coremark"), None)
         if cm:
-            if md_mode == "w":
+            if "## CoreMark" not in existing_content:
                 f.write("## CoreMark\n\n")
             scores = compute_scores(cm, freq_mhz)
-            if md_mode == "w":
+            if "## CoreMark" not in existing_content:
                 f.write(f"| Metric | Value |\n|--------|-------|\n")
             f.write(f"| Status | {cm['status']} |\n")
             if "cycles_per_iter" in scores:
@@ -227,10 +250,10 @@ def generate_report(all_results, freq_mhz, out_dir):
         # Dhrystone
         dhry = next((r for r in all_results if r["bench"] == "dhrystone"), None)
         if dhry:
-            if md_mode == "w":
+            if "## Dhrystone" not in existing_content:
                 f.write("## Dhrystone\n\n")
             scores = compute_scores(dhry, freq_mhz)
-            if md_mode == "w":
+            if "## Dhrystone" not in existing_content:
                 f.write(f"| Metric | Value |\n|--------|-------|\n")
             f.write(f"| Status | {dhry['status']} |\n")
             if "dmips_per_mhz" in scores:
@@ -243,7 +266,7 @@ def generate_report(all_results, freq_mhz, out_dir):
         # EMBench table
         embench_results = [r for r in all_results if r["bench"] not in ("coremark", "dhrystone")]
         if embench_results:
-            if md_mode == "w":
+            if "## EMBench-IoT" not in existing_content:
                 f.write("## EMBench-IoT\n\n")
                 f.write("| Benchmark | Scale | Cycles | Cycles/Iter | Status |\n")
                 f.write("|-----------|-------|--------|-------------|--------|\n")
@@ -331,13 +354,14 @@ def main():
 
         # Flash the firmware for this benchmark
         if not args.no_flash:
-            if os.path.exists(bit_path):
+            tcl_script = os.path.abspath(os.path.join(os.path.dirname(bit_path), "../" + os.path.basename(bit_path).replace(".bit", ".tcl")))
+            if os.path.exists(tcl_script):
                 build_dir = os.path.dirname(bit_path)
                 flash_mem(mem_file, bit_path, build_dir)
             else:
-                print(f"WARNING: Bitstream not found at {bit_path}")
+                print(f"WARNING: Vivado TCL script not found at {tcl_script}")
                 print("         Skipping flash — ensure the board is already programmed.")
-                print("         Run Vivado: cd fpga/arty_a7 && vivado -mode batch -source kavacha_arty_a7.tcl")
+                print("         Or specify correct bitstream path using --bit")
         else:
             print(f"[HIL] --no-flash: skipping programming for {bench_name}")
 
