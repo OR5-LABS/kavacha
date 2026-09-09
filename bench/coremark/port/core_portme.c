@@ -82,9 +82,8 @@ int main(void)
 {
     int rc = core_main();   /* runs benchmark, prints results via ee_printf */
 
-    /* Report sim_cycles only (no firmware cycle side-channel for CoreMark —
-     * the harness uses sim_cycles as the timing measurement, and ee_printf
-     * output carries the human-readable CoreMark score). */
+    /* Report firmware cycle side-channel for CoreMark so harness prints bench_cycles */
+    report_cycles(get_time());
     write_tohost(rc == 0 ? 1u : 2u);
     return rc;
 }

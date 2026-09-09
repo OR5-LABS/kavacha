@@ -86,6 +86,7 @@ int main(int argc, char* argv[])
     const char* hex_path   = nullptr;
     const char* bench_name = "unknown";
     uint64_t    max_cycles = 200000000ULL; // 200 M — covers CoreMark × 1000
+    uint64_t    iterations = 1000;
     bool        do_trace   = false;
 
     for (int i = 1; i < argc; i++) {
@@ -94,11 +95,14 @@ int main(int argc, char* argv[])
         else if (!strcmp(argv[i], "--max-cycles") && i+1 < argc) {
             max_cycles = (uint64_t)strtoull(argv[++i], nullptr, 10);
         }
+        else if (!strcmp(argv[i], "--iterations") && i+1 < argc) {
+            iterations = (uint64_t)strtoull(argv[++i], nullptr, 10);
+        }
         else if (!strcmp(argv[i], "--trace")) { do_trace = true; }
     }
 
     if (!hex_path) {
-        fprintf(stderr, "Usage: %s --hex <file.hex> --name <name> [--max-cycles N] [--trace]\n",
+        fprintf(stderr, "Usage: %s --hex <file.hex> --name <name> [--max-cycles N] [--iterations N] [--trace]\n",
                 argv[0]);
         return 1;
     }
@@ -213,6 +217,14 @@ int main(int argc, char* argv[])
             // CoreMark reports via ee_printf; we only have sim_cycles
             printf("[BENCH] %-24s  sim_cycles=%-12" PRIu64 "  PASS\n",
                    bench_name, sim_cycles);
+        }
+        if (!strcmp(bench_name, "coremark")) {
+            uint64_t cycles = (bench_cycles > 0) ? bench_cycles : sim_cycles;
+            if (cycles > 0 && iterations > 0) {
+                double cpi = (double)cycles / iterations;
+                double cm_mhz = 1000000.0 / cpi;
+                printf("[BENCH] CoreMark / MHz: %.4f\n", cm_mhz);
+            }
         }
     } else {
         printf("[BENCH] %-24s  sim_cycles=%-12" PRIu64 "  FAIL(code=%d)\n",

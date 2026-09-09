@@ -59,7 +59,8 @@ def write_report(results_dir: Path, iterations: int, scale: int):
     """Generate Kavacha benchmark report."""
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cm = parse_log(results_dir / "coremark.log")
-    cpi = cm["sim_cycles"] / iterations if cm["sim_cycles"] else None
+    cm_cycles = cm["bench_cycles"] if cm["bench_cycles"] else cm["sim_cycles"]
+    cpi = cm_cycles / iterations if cm_cycles else None
 
     md = [
         "# Kavacha Benchmark Results",
@@ -77,6 +78,10 @@ def write_report(results_dir: Path, iterations: int, scale: int):
         md += [
             f"- Status: **✅ PASS**",
             f"- Total sim cycles: **{fmt(cm['sim_cycles'])}**",
+        ]
+        if cm["bench_cycles"]:
+            md.append(f"- Total bench cycles: **{fmt(cm['bench_cycles'])}**")
+        md += [
             f"- Cycles/iteration: **{cpi:,.1f}**",
             f"- CoreMark/MHz: **{1e6/cpi:.4f}**",
             f"- Total Score @ 50 MHz: **{1e6/cpi*50:.2f}**",

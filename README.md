@@ -5,10 +5,6 @@
 </p>
 
 <p align="center">
-  <b><i>Small by design. Correct by construction.</i></b>
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/ISA-RV32IMC-blue?style=flat-square" alt="ISA"/>
   <img src="https://img.shields.io/badge/Extensions-Zicsr-blue?style=flat-square" alt="Extensions"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
@@ -22,7 +18,7 @@
 **Kavacha** (*"armour"* in Sanskrit) is a compact, area-optimized **RV32IMC** processor core.
 It executes one instruction at a time through a small multi-cycle finite state machine — no pipeline, no forwarding, and no hazard logic — which keeps the design tiny, deterministic, and straightforward to verify.
 
-Kavacha targets roles where silicon area, power, and predictability matter more than peak throughput:
+Kavacha targets roles where silicon area, power, and security matter more than peak throughput:
 
 -  **Secure boot ROMs and management engines**
 -  **Deeply embedded control-plane state machines**
@@ -36,14 +32,8 @@ Kavacha targets roles where silicon area, power, and predictability matter more 
 | Property | Value |
 |----------|-------|
 | ISA | RV32IMC + Zicsr |
-| Register width (XLEN) | 32-bit |
 | Microarchitecture | Multi-cycle FSM, non-pipelined |
-| Instructions in flight | 1 (zero hazards by construction) |
 | Privilege modes | Machine; optional User (`SECURE`) |
-| Memory protection | Optional 8-region PMP + ePMP |
-| Register file | Plain, or SECDED ECC (`SECURE`) |
-| Interrupts | Timer, Software, External |
-| Misaligned load/store | Supported in hardware |
 | Debug | RISC-V External Debug 0.13.2 (JTAG DTM + DM) |
 | Bus interfaces | Native memory port + AXI4-Lite |
 | Verification | Golden co-simulation, RVFI, self-checks |
