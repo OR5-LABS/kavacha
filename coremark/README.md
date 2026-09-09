@@ -59,7 +59,7 @@ All CoreMark performance runs execute 1,000 iterations (the EEMBC minimum requir
 
 | Environment | Target | Iterations | Total Ticks (Cycles) | Cycles / Iteration | CoreMark / MHz | Status |
 |-------------|--------|------------|----------------------|--------------------|----------------|--------|
-| **Simulation** | Verilator 5.018 | 1,000 | **847,547,135** | **847,547.1** | **1.1799** | ✅ PASS |
+
 | **FPGA HIL** | Arty A7-100T @ 50 MHz | 1,000 | **1,234,774,918** | **1,234,774.9** | **0.8100** | ✅ PASS |
 
 ---
@@ -74,10 +74,10 @@ CoreMark scores measure normalized throughput per MHz ($\text{CoreMark/MHz}$).
 2. **CoreMark / MHz**:
    $$\text{CoreMark / MHz} = \frac{1,000,000}{\text{Cycles / Iteration}}$$
 
-### Sample Calculation (Simulation):
-$$\text{Cycles / Iteration} = \frac{847,547,135}{1,000} = 847,547.135$$
+### Sample Calculation (FPGA HIL):
+$$\text{Cycles / Iteration} = \frac{1,234,774,918}{1,000} = 1,234,774.918$$
 
-$$\text{CoreMark / MHz} = \frac{1,000,000}{847,547.135} = 1.1799 \text{ CoreMark/MHz}$$
+$$\text{CoreMark / MHz} = \frac{1,000,000}{1,234,774.918} = 0.8100 \text{ CoreMark/MHz}$$
 
 *Note: Benchmark loop ticks are captured directly via RISC-V 64-bit `mcycle` CSR reads around `ee_main()`, excluding boot initialization (`crt0.S`) and stack setup.*
 
@@ -98,9 +98,6 @@ The `coremark/` directory provides shell drivers for running and reproducing Cor
 
 ## Execution Screenshots
 
-### Simulation
-
-![CoreMark Simulation Output](coremark_sim.png)
 
 ### FPGA HIL
 

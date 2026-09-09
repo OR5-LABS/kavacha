@@ -144,33 +144,33 @@ Simulated on the Verilator cycle-accurate model.
 
 ### CoreMark
 
-| Metric | Simulation | FPGA (Arty A7 @ 50 MHz) |
-|--------|-----------|-------------------------|
-| Iterations | 1,000 | 1,000 |
-| Total cycles | 847,547,135 | 1,234,774,918 |
-| Cycles / iteration | 847,547.1 | 1,234,774.9 |
-| CoreMark / MHz | **1.1799** | **0.81** |
-| Status | ✅ PASS | ✅ PASS |
+| Metric | FPGA (Arty A7 @ 50 MHz) |
+|--------|-------------------------|
+| Iterations | 1,000 |
+| Total cycles | 1,234,774,918 |
+| Cycles / iteration | 1,234,774.9 |
+| CoreMark / MHz | **0.81** |
+| Status | ✅ PASS |
 
 ### Dhrystone v2.1
 
-| Metric | Simulation | FPGA (Arty A7 @ 50 MHz) |
-|--------|-----------|-------------------------|
-| Iterations | 100,000 | 100,000 |
-| Total cycles | 141,600,085 | 207,900,101 |
-| Cycles / iteration | 1,416 | 2,079 |
-| Dhrystones / sec / MHz | 706 | 481 |
-| DMIPS / MHz | **0.401** | **0.274** |
-| Status | ✅ PASS | ✅ PASS |
+| Metric | FPGA (Arty A7 @ 50 MHz) |
+|--------|-------------------------|
+| Iterations | 100,000 |
+| Total cycles | 207,900,101 |
+| Cycles / iteration | 2,079 |
+| Dhrystones / sec / MHz | 481 |
+| DMIPS / MHz | **0.274** |
+| Status | ✅ PASS |
 
 ### EMBench-IoT
 
-| Metric | Simulation | FPGA HIL (Arty A7 @ 50 MHz) |
-|--------|-----------|-------------------------|
-| Benchmarks run | 19 | 15 |
-| Benchmarks passed | 19 / 19 (100%) | 15 / 15 (100%) |
-| Geometric mean (cycles) | **7,011,979** | **7,122,462** |
-| Scale factor | 100 (10 for picojpeg, nsichneu, qrduino; 2 for wikisort, huffbench) | 100 (10 for picojpeg, nsichneu, qrduino; 2 for wikisort, huffbench) |
+| Metric | FPGA HIL (Arty A7 @ 50 MHz) |
+|--------|-------------------------|
+| Benchmarks run | 15 |
+| Benchmarks passed | 15 / 15 (100%) |
+| Geometric mean (cycles) | **7,122,462** |
+| Scale factor | 100 (10 for picojpeg, nsichneu, qrduino; 2 for wikisort, huffbench) |
 
 
 ###  Reproduce It Yourself
