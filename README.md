@@ -1,7 +1,7 @@
 # Kavacha
 
 <p align="center">
-  <img src="kavacha-banner.png" alt="Kavacha Logo" width="600"/>
+  <img src="kavacha-banner.png" alt="Kavacha Logo" width="900"/>
 </p>
 
 <p align="center">
@@ -41,7 +41,7 @@ Kavacha targets roles where silicon area, power, and security matter more than p
 
 ---
 
-![alt text](architecture.png)
+![alt text](Kavacha_architecture_README.png)
 
 
 ## Features
