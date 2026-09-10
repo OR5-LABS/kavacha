@@ -223,8 +223,7 @@ kavacha/
 ├── coremark/            CoreMark FPGA runners
 ├── embench/             EMBench-IoT FPGA runners
 ├── docs/                Documentation site (MkDocs)
-├── build.sh             Linux / macOS build & test driver
-└── build.ps1            Windows (PowerShell) build & test driver
+└── build.sh             Build & test driver
 ```
 
 ---
@@ -280,20 +279,6 @@ Expected output:
 | AXI4-Lite test | `axil` | Native memory bus to AXI4-Lite protocol conversion |
 | FPGA SoC test | `fpga` | Full SoC simulation with synthesizable UART and Debug Module |
 
-### Windows (PowerShell)
-
-```powershell
-.\build.ps1          # compile + smoke
-.\build.ps1 cosim    # + golden co-simulation
-.\build.ps1 rvfi
-.\build.ps1 debug
-.\build.ps1 pmp
-.\build.ps1 epmp
-.\build.ps1 ecc
-.\build.ps1 axil
-.\build.ps1 fpga
-.\build.ps1 clean
-```
 
 ## License
 
