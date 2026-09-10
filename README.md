@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/ISA-RV32IMC-blue" alt="ISA"/>
+  <img src="https://img.shields.io/badge/ISA-RV32IMC-green" alt="ISA"/>
   <img src="https://img.shields.io/badge/Extensions-Zicsr-blue" alt="Extensions"/>
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License"/>
   <a href="https://www.linkedin.com/company/open-risc-v/"><img src="https://img.shields.io/badge/LinkedIn-Follow-0077B5" alt="LinkedIn Follow"/></a>
