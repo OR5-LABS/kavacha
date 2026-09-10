@@ -1,7 +1,7 @@
 # Kavacha
 
 <p align="center">
-  <img src="kavacha.png" alt="Kavacha Logo" width="600"/>
+  <img src="kavacha-banner.png" alt="Kavacha Logo" width="600"/>
 </p>
 
 <p align="center">
