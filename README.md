@@ -1,3 +1,5 @@
+<div align="center">
+
 # Kavacha
 
 <p align="center">
@@ -11,7 +13,7 @@
   <a href="https://www.linkedin.com/company/open-risc-v/"><img src="https://img.shields.io/badge/LinkedIn-Follow-0077B5" alt="LinkedIn Follow"/></a>
   <a href="https://or5.org"><img src="https://img.shields.io/badge/Visit-or5.org-brightgreen?logo=google-chrome" alt="Visit or5.org"/></a>
 </p>
-
+</div>
 
 ## About
 
