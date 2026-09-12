@@ -224,7 +224,6 @@ kavacha/
 ├── dhrystone/           Dhrystone v2.1 benchmark
 ├── coremark/            CoreMark FPGA runners
 ├── embench/             EMBench-IoT FPGA runners
-├── docs/                Documentation site (MkDocs)
 └── build.sh             Build & test driver
 ```
 
