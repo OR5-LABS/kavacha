@@ -54,7 +54,9 @@ There is nothing to forward and no hazard to detect — behaviour is completely
 deterministic, and correctness is easy to establish.
 
 ###  Two-Tier Trust Model
-The optional `SECURE` configuration adds a **User privilege mode** and an **8-region Physical Memory Protection (PMP)** unit with **Smepmp** (`mseccfg`) semantics — including Machine Mode Lockdown (MML), Machine Mode Whitelist Policy (MMWP), and Rule Locking Bypass (RLB). Even Machine mode cannot silently escape a strict isolation policy.
+The optional `SECURE` configuration adds a **User privilege mode** and an **8-region Physical Memory Protection (PMP)** unit with `mseccfg` rules: Machine Mode Whitelist Policy (MMWP) and Rule Locking Bypass (RLB) are enforced.
+
+> **Known limitations (current release):** `mseccfg.MML` (Machine Mode Lockdown) is stored but not yet enforced by the PMP checker, and the core does not yet trap User-mode access to Machine-level CSRs or `MRET`. Until these are fixed, the `SECURE` build does not provide full User/Machine isolation.
 
 ###  Register File ECC
 The `SECURE` configuration replaces the plain register file with a **SECDED** (single-error-correct, double-error-detect) protected version. Each register is stored with check bits so that a single-bit upset is corrected on read and a double-bit upset is detected — critical for radiation-sensitive and reliability-critical deployments.
