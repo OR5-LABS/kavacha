@@ -36,7 +36,7 @@ Kavacha targets roles where silicon area, power, and security matter more than p
 | ISA | RV32IMC + Zicsr |
 | Microarchitecture | Multi-cycle FSM, non-pipelined |
 | Privilege modes | Machine; optional User (`SECURE`) |
-| Debug | RISC-V External Debug 0.13.2 (JTAG DTM + DM) |
+| Debug | RISC-V External Debug 0.13 over JTAG (DTM + DM; `dmstatus.version` = 2) |
 | Bus interfaces | Native memory port + AXI4-Lite |
 | Verification | Golden co-simulation, RVFI, self-checks |
 
@@ -54,19 +54,19 @@ There is nothing to forward and no hazard to detect — behaviour is completely
 deterministic, and correctness is easy to establish.
 
 ###  Two-Tier Trust Model
-The optional `SECURE` configuration adds a **User privilege mode** and an **8-region Physical Memory Protection (PMP)** unit with **ePMP** (`mseccfg`) semantics — including Machine Mode Lockdown (MML), Machine Mode Whitelist Policy (MMWP), and Rule Locking Bypass (RLB). Even Machine mode cannot silently escape a strict isolation policy.
+The optional `SECURE` configuration adds a **User privilege mode** and an **8-region Physical Memory Protection (PMP)** unit with **Smepmp** (`mseccfg`) semantics — including Machine Mode Lockdown (MML), Machine Mode Whitelist Policy (MMWP), and Rule Locking Bypass (RLB). Even Machine mode cannot silently escape a strict isolation policy.
 
 ###  Register File ECC
 The `SECURE` configuration replaces the plain register file with a **SECDED** (single-error-correct, double-error-detect) protected version. Each register is stored with check bits so that a single-bit upset is corrected on read and a double-bit upset is detected — critical for radiation-sensitive and reliability-critical deployments.
 
-###  Industrial-Strength Verification
-Every build is checked against a **golden RV32IM ISA model** (retire-for-retire co-simulation), exposes an **RVFI** (RISC-V Formal Interface) port for formal analysis, and ships self-checking testbenches for the core, the debug module, and the ECC register file.
+###  Verification
+The smoke program is co-simulated retire-for-retire against a **golden RV32IM ISA model**; the core exposes an **RVFI** (RISC-V Formal Interface) port with a trace self-check (riscv-formal has not been run yet), and ships self-checking testbenches for the core, the debug module, and the ECC register file.
 
 ###  Dual Bus Interfaces
 - **Native memory port** — for tightest, zero-latency tightly-coupled memory integration.
 - **AXI4-Lite wrapper** — for drop-in integration into standard SoC fabrics, sharing buses with other masters and peripherals.
 
-###  Hardware Debug (RISC-V Debug 0.13.2)
+###  Hardware Debug (RISC-V Debug 0.13)
 A JTAG Debug Transport Module and RISC-V Debug Module let **OpenOCD** and **GDB** halt, resume, single-step, inspect registers and CSRs, and read/write memory over the system bus — all out of the box.
 
 ###  Compressed Instructions (RVC)
@@ -85,7 +85,7 @@ or compile-time define `-DKAVACHA_SECURE`:
 | Property / Feature | **Default** | **SECURE** |
 |---|---|---|
 | **Privilege modes** | Machine (M) only | Machine (M) + User (U) |
-| **Memory protection** | — | 8-region PMP + ePMP (`mseccfg`) |
+| **Memory protection** | — | 8-region PMP + Smepmp (`mseccfg`) |
 | **Register file** | Plain (32×32-bit) | SECDED ECC protected |
 | **Target use case** | Smallest footprint | Isolation & reliability |
 | **`misa` U bit** | Not set | Set |
@@ -99,7 +99,7 @@ or compile-time define `-DKAVACHA_SECURE`:
 
 # SECURE configuration (M+U, PMP, ECC)
 ./build.sh pmp       # User mode + PMP test program
-./build.sh epmp      # ePMP (mseccfg) rules test
+./build.sh epmp      # Smepmp (mseccfg) rules test
 ./build.sh ecc       # Register-file SECDED ECC unit test
 ```
 
@@ -142,11 +142,11 @@ All benchmarks are compiled with:
 ```
 riscv-none-elf-gcc -O2 -march=rv32imc_zicsr -mabi=ilp32
 ```
-Simulated on the Verilator cycle-accurate model.
+Results below are from cycle-accurate simulation, not from an FPGA run.
 
 ### CoreMark
 
-| Metric | FPGA (Arty A7 @ 50 MHz) |
+| Metric | Simulation (cycle-accurate) |
 |--------|-------------------------|
 | Iterations | 1,000 |
 | Total cycles | 1,234,774,918 |
@@ -156,7 +156,7 @@ Simulated on the Verilator cycle-accurate model.
 
 ### Dhrystone v2.1
 
-| Metric | FPGA (Arty A7 @ 50 MHz) |
+| Metric | Simulation (cycle-accurate) |
 |--------|-------------------------|
 | Iterations | 100,000 |
 | Total cycles | 207,900,101 |
@@ -247,7 +247,7 @@ Expected output:
 ./build.sh rvfi     # RVFI (formal interface) self-check
 ./build.sh debug    # JTAG / Debug-Module self-check
 ./build.sh pmp      # SECURE config: User mode + PMP test program
-./build.sh epmp     # SECURE config: ePMP (mseccfg) rules test
+./build.sh epmp     # SECURE config: Smepmp (mseccfg) rules test
 ./build.sh ecc      # Register-file SECDED ECC unit test
 ./build.sh axil     # AXI4-Lite adapter self-check
 ./build.sh fpga     # FPGA SoC simulation (UART banner + LED activity)
@@ -261,7 +261,7 @@ Expected output:
 | RVFI self-check | `rvfi` | Instruction-level trace conforms to the formal interface |
 | Debug self-check | `debug` | The Debug Module halts, inspects, and steps correctly |
 | PMP test | `pmp` | User-mode isolation and PMP enforcement |
-| ePMP test | `epmp` | Enhanced PMP (mseccfg) rules |
+| Smepmp test | `epmp` | Smepmp (enhanced PMP, `mseccfg`) rules |
 | ECC unit test | `ecc` | The register file corrects/detects bit errors |
 | AXI4-Lite test | `axil` | Native memory bus to AXI4-Lite protocol conversion |
 | FPGA SoC test | `fpga` | Full SoC simulation with synthesizable UART and Debug Module |
